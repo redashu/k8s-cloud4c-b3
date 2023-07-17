@@ -96,3 +96,30 @@ Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service 
 
 
 ```
+
+### Verify docker with user
+
+```
+[ashu@ip-172-31-5-47 ~]$ docker version
+Client:
+ Version:           20.10.23
+ API version:       1.41
+ Go version:        go1.18.9
+ Git commit:        7155243
+ Built:             Tue Apr 11 22:56:36 2023
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server:
+ Engine:
+  Version:          20.10.23
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.18.9
+  Git commit:       6051f14
+  Built:            Tue Apr 11 22:57:17 2023
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.6.19
+```
