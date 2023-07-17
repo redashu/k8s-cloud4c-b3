@@ -63,3 +63,36 @@ ashu
 5.10.184-175.731.amzn2.x86_64
 [ashu@ip-172-31-5-47 ~]$
 ```
+
+### installing docker on linux 
+
+```
+[root@ip-172-31-5-47 ~]# yum install docker -y 
+Failed to set locale, defaulting to C
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                                                            | 3.7 kB  00:00:00     
+Resolving Dependencies
+--> Running transaction check
+---> Package docker.x86_64 0:20.10.23-1.amzn2.0.1 will be installed
+--> Processing Dependency: runc >= 1.0.0 for package: docker-20.10.23-1.amzn2.0.1.x86_64
+--> Processing Dependency: libcgroup >= 0.40.rc1-5.15 for package: docker-20.10.23-1.amzn2.0.1.x86_64
+--> Processing Dependency: containerd >= 1.3.2 for package: docker-20.10.23-1.amzn2.0.1.x86_64
+--> Processing Dependency: pigz for package: docker-20.10.23-1.amzn2.0.1.x86_64
+--> Running transaction check
+
+```
+
+### starting docker 
+
+```
+[root@ip-172-31-5-47 ~]# for i in `cat users.txt`
+> do
+> usermod -aG docker $i
+> done
+[root@ip-172-31-5-47 ~]# systemctl enable --now docker 
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
+[root@ip-172-31-5-47 ~]# 
+
+
+
+```
