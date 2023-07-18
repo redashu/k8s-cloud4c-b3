@@ -125,3 +125,17 @@ aad60501bee3   ankita-ui:v1   "/docker-entrypoint.…"   4 seconds ago   Up 3 se
 821f9559ca3c   ashu-ui:v1     "/docker-entrypoint.…"   7 seconds ago   Up 6 seconds   80/tcp    ashu-ui-app
 [ashu@ip-172-31-5-47 webui-app]$ 
 ```
+
+### manually stop and remove container
+
+```
+=====> stopping container
+
+[ashu@ip-172-31-5-47 webui-app]$ docker  kill  ashu-ui-app 
+ashu-ui-app
+
+=====> removing container 
+[ashu@ip-172-31-5-47 webui-app]$ docker rm ashu-ui-app
+ashu-ui-app
+[ashu@ip-172-31-5-47 webui-app]$ 
+```
