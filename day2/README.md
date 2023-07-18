@@ -45,3 +45,18 @@ assets  elements.html  generic.html  html5up-phantom.zip  images  index.html  LI
 [ashu@ip-172-31-5-47 webui-app]$ 
 ```
 
+### creating Dockerfile for html code base
+
+## Dockerfile
+
+```
+FROM nginx
+# this mean we are refering nginx lib from Docker hub
+LABEL name=ashutoshh
+LABEL email=ashutoshh@linux.com
+# optional info but good to write if someone need to contact
+COPY html-sample-app /usr/share/nginx/html/
+# we are coping html-code to the location of nginx 
+# from where nginx can read by default 
+
+```
