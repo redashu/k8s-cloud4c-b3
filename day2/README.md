@@ -170,3 +170,88 @@ e6992ec444ac   ashu-ui:v1           "/docker-entrypoint.…"   6 minutes ago    
 ef514a55f0b6   chandrshekar-ui:v1   "/docker-entrypoint.…"   11 minutes ago       Up 11 minutes       80/tcp    chandrashekar-ui-app
 [ashu@ip-172-31-5-47 webui-app]$ 
 ```
+
+## PYthon code to docker image
+
+### hello.py 
+
+```
+import time
+while 3 > 2 :
+    print("Hello cloud4c team  !!")
+    time.sleep(2)
+    print("Welcome to Docker ")
+    time.sleep(1)
+    print("Tomorrow will start with kubernetes ..")
+    print("_______________")
+    time.sleep(1)
+```
+
+### Dockerfile
+
+```
+FROM python:3.9
+LABEL email=ashutoshh@linux.com
+RUN mkdir /ashucode 
+# created a folder inside new docker image
+COPY hello.py  /ashucode/hello.py 
+# we have to let our container know how to run python code
+CMD ["python","/ashucode/hello.py"]
+# cmd will be automatically executed once you create container by docker run
+
+```
+
+### lets build image
+
+```
+[ashu@ip-172-31-5-47 webui-app]$ ls
+Dockerfile  html-sample-app
+[ashu@ip-172-31-5-47 webui-app]$ cd ..
+[ashu@ip-172-31-5-47 ashu-docker-images]$ ls
+java-app  node-app  python-app  webui-app
+[ashu@ip-172-31-5-47 ashu-docker-images]$ cd python-app/
+[ashu@ip-172-31-5-47 python-app]$ ls
+Dockerfile  hello.py
+[ashu@ip-172-31-5-47 python-app]$ docker build -t ashupy:v11 . 
+Sending build context to Docker daemon  3.072kB
+Step 1/5 : FROM python:3.9
+3.9: Pulling from library/python
+d52e4f012db1: Already exists 
+7dd206bea61f: Already exists 
+2320f9be4a9c: Already exists 
+6e5565e0ba8d: Already exists 
+d3797e13cc41: Already exists 
+9421d62bef94: Pull complete 
+19d7d75bfdca: Pull complete 
+67f28346abde: Pull complete 
+Digest: sha256:ba10a2af9d6c3bd0d20c46ecbf866dabcbad4e6a3dd7b82e2dfb1a9b6d479d87
+Status: Downloaded newer image for python:3.9
+ ---> 1d7821476b67
+Step 2/5 : LABEL email=ashutoshh@linux.com
+ ---> Running in 2c8b66422a15
+Removing intermediate container 2c8b66422a15
+ ---> aa3cd5e756ed
+Step 3/5 : RUN mkdir /ashucode
+ ---> Running in 83eca7ffe0dc
+Removing intermediate container 83eca7ffe0dc
+ ---> cb6324484c87
+Step 4/5 : COPY hello.py  /ashucode/hello.py
+ ---> 3c97c59cfbf8
+Step 5/5 : CMD ["python","/ashucode/hello.py"]
+ ---> Running in efc6db20f330
+Removing intermediate container efc6db20f330
+ ---> da6173f10096
+Successfully built da6173f10096
+Successfully tagged ashupy:v11
+```
+
+### verify 
+
+```
+[ashu@ip-172-31-5-47 python-app]$ docker images  | grep ashu
+ashupy             v11       da6173f10096   About a minute ago   997MB
+ashu-ui            v1        277fb6dca6b5   38 minutes ago       190MB
+[ashu@ip-172-31-5-47 python-app]$ 
+
+```
+
