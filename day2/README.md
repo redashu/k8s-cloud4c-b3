@@ -255,3 +255,24 @@ ashu-ui            v1        277fb6dca6b5   38 minutes ago       190MB
 
 ```
 
+### create contaienr and check output
+
+```
+[ashu@ip-172-31-5-47 python-app]$ docker run --name ashupyc1  -d  -it ashupy:v11 
+5bcc3eb1e2924c5568919e8e3b9ad44662ea7f138b952d9cad01ecab64ce855e
+[ashu@ip-172-31-5-47 python-app]$ docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS                  PORTS     NAMES
+784c5f3ffadc   ankitapy:v11     "python /ankitacode/…"   1 second ago    Up Less than a second             ankitapyc1
+5bcc3eb1e292   ashupy:v11       "python /ashucode/he…"   3 seconds ago   Up 2 seconds                      ashupyc1
+28cd8aed7a4c   siva-python:v1   "python /sivapythonc…"   3 minutes ago   Up 3 minutes                      siva-python-app
+
+
+
+[ashu@ip-172-31-5-47 python-app]$ docker  logs  ashupyc1
+Hello cloud4c team  !!
+Welcome to Docker 
+Tomorrow will start with kubernetes ..
+_______________
+```
+
+
