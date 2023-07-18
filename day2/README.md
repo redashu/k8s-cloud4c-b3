@@ -112,11 +112,11 @@ nginx        latest    021283c8eb95   13 days ago          187MB
 
 ```
 ======> creating container
-ashu@ip-172-31-5-47 webui-app]$ docker run --name  ashu-ui-app  -d  ashu-ui:v1  
+ docker run --name  ashu-ui-app  -d  ashu-ui:v1  
 821f9559ca3c4e8aef5f25f9c9c2be7a732a3e53ab2cddc497850b4a5e2fb8bf
 
 =======> verify container listing 
-[ashu@ip-172-31-5-47 webui-app]$ docker ps
+ docker ps
 CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS     NAMES
 bf562b318b56   vital-ui:v1    "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   80/tcp    vital-ui-app
 09e225b1c8f2   nikita-ui:v1   "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   80/tcp    nikita-ui-app
