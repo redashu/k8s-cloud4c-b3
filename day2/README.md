@@ -66,6 +66,8 @@ COPY html-sample-app /usr/share/nginx/html/
 ```
 [ashu@ip-172-31-5-47 webui-app]$ ls
 Dockerfile  html-sample-app
+
+====
 [ashu@ip-172-31-5-47 webui-app]$ docker build -t ashu-ui:v1 . 
 Sending build context to Docker daemon  3.629MB
 Step 1/4 : FROM nginx
@@ -104,4 +106,22 @@ ashu-ui      v1        30bb75b24fc6   About a minute ago   190MB
 ankita-ui    v1        b69e948143eb   About a minute ago   190MB
 vital-ui     v1        bdf3530b9f02   About a minute ago   190MB
 nginx        latest    021283c8eb95   13 days ago          187MB
+```
+
+### creating and verify container status
+
+```
+======> creating container
+ashu@ip-172-31-5-47 webui-app]$ docker run --name  ashu-ui-app  -d  ashu-ui:v1  
+821f9559ca3c4e8aef5f25f9c9c2be7a732a3e53ab2cddc497850b4a5e2fb8bf
+
+=======> verify container listing 
+[ashu@ip-172-31-5-47 webui-app]$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS     NAMES
+bf562b318b56   vital-ui:v1    "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   80/tcp    vital-ui-app
+09e225b1c8f2   nikita-ui:v1   "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   80/tcp    nikita-ui-app
+7285f7214b4a   rasi-ui:v1     "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   80/tcp    rasi-ui-app
+aad60501bee3   ankita-ui:v1   "/docker-entrypoint.…"   4 seconds ago   Up 3 seconds   80/tcp    ankita-ui-app
+821f9559ca3c   ashu-ui:v1     "/docker-entrypoint.…"   7 seconds ago   Up 6 seconds   80/tcp    ashu-ui-app
+[ashu@ip-172-31-5-47 webui-app]$ 
 ```
