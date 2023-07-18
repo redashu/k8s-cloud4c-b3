@@ -139,3 +139,34 @@ ashu-ui-app
 ashu-ui-app
 [ashu@ip-172-31-5-47 webui-app]$ 
 ```
+
+### what if we only kill not remove
+
+```
+[ashu@ip-172-31-5-47 webui-app]$ docker ps
+CONTAINER ID   IMAGE                COMMAND                  CREATED              STATUS              PORTS     NAMES
+b82024a9ce79   girish:v1            "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp    girish-ui-app
+e6992ec444ac   ashu-ui:v1           "/docker-entrypoint.…"   6 minutes ago        Up 6 minutes        80/tcp    ashuc1
+ef514a55f0b6   chandrshekar-ui:v1   "/docker-entrypoint.…"   11 minutes ago       Up 11 minutes       80/tcp    chandrashekar-ui-app
+[ashu@ip-172-31-5-47 webui-app]$ docker kill ashuc1
+ashuc1
+[ashu@ip-172-31-5-47 webui-app]$ docker ps
+CONTAINER ID   IMAGE                COMMAND                  CREATED              STATUS              PORTS     NAMES
+b82024a9ce79   girish:v1            "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp    girish-ui-app
+ef514a55f0b6   chandrshekar-ui:v1   "/docker-entrypoint.…"   11 minutes ago       Up 11 minutes       80/tcp    chandrashekar-ui-app
+[ashu@ip-172-31-5-47 webui-app]$ docker ps -a
+CONTAINER ID   IMAGE                COMMAND                  CREATED              STATUS                            PORTS     NAMES
+b82024a9ce79   girish:v1            "/docker-entrypoint.…"   About a minute ago   Up About a minute                 80/tcp    girish-ui-app
+e6992ec444ac   ashu-ui:v1           "/docker-entrypoint.…"   6 minutes ago        Exited (137) 7 seconds ago                  ashuc1
+ef514a55f0b6   chandrshekar-ui:v1   "/docker-entrypoint.…"   11 minutes ago       Up 11 minutes                     80/tcp    chandrashekar-ui-app
+73cd9ee2be0f   dasharath-ui:v1      "/docker-entrypoint.…"   11 minutes ago       Exited (137) 2 minutes ago                  webui-app
+911bcefd5c5d   siva-ui:v1           "/docker-entrypoint.…"   14 minutes ago       Exited (137) About a minute ago             siva-ui-app
+[ashu@ip-172-31-5-47 webui-app]$ docker start  ashuc1
+ashuc1
+[ashu@ip-172-31-5-47 webui-app]$ docker  ps
+CONTAINER ID   IMAGE                COMMAND                  CREATED              STATUS              PORTS     NAMES
+b82024a9ce79   girish:v1            "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp    girish-ui-app
+e6992ec444ac   ashu-ui:v1           "/docker-entrypoint.…"   6 minutes ago        Up 2 seconds        80/tcp    ashuc1
+ef514a55f0b6   chandrshekar-ui:v1   "/docker-entrypoint.…"   11 minutes ago       Up 11 minutes       80/tcp    chandrashekar-ui-app
+[ashu@ip-172-31-5-47 webui-app]$ 
+```
