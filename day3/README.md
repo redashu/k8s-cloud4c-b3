@@ -220,4 +220,50 @@ ashuc1
 <img src="reg.png">
 
 
+## pushing image to docker hub 
 
+### step 1 -- convert image to the supported format of docker hub
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ docker images | grep ashu
+ashunode                  appv3     4feade147a07   36 minutes ago      186MB
+ashunode                  appv1     6afdf9164438   44 minutes ago      1.1GB
+ashunode                  appv2     d81cf98fe574   49 minutes ago      1.1GB
+ashupy                    v11       da6173f10096   23 hours ago        997MB
+ashu-ui                   v1        277fb6dca6b5   24 hours ago        190MB
+[ashu@ip-172-31-5-47 ashu-docker-images]$ docker  tag ashunode:appv1   docker.io/dockerashu/ashunode:version1 
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+
+
+```
+
+### image format
+
+<img src="format.png">
+
+### step 2 -- Login to docker hub from docker cli 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ docker login 
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+```
+
+### step 3 -- push and verify 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ docker push docker.io/dockerashu/ashunode:version1  
+The push refers to repository [docker.io/dockerashu/ashunode]
+c9350bdf6c0b: Pushed 
+622381da4ae3: Pushed 
+af7c9f18c3e3: Pushed 
+89e26aac0240: Mounted from library/node 
+af5005bda04e: Mounted from library/node 
+```
