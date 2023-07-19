@@ -281,3 +281,20 @@ d52e4f012db1: Downloading [=======================>                           ] 
 5f1526a28cf9: Download complete 
 ```
 
+## Problem with huge scale app -- 
+
+<img src="prob2.png">
+
+### solving problem using given tech
+
+<img src="tech.png">
+
+### introduction to k8s 
+
+<img src="k8s.png">
+
+### understanding first level of arch of k8s
+
+<img src="k8sarch1.png">
+
+
