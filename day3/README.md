@@ -267,3 +267,17 @@ af7c9f18c3e3: Pushed
 89e26aac0240: Mounted from library/node 
 af5005bda04e: Mounted from library/node 
 ```
+
+### to pull image 
+
+```
+ docker pull dockerashu/ashunode:version1
+ 
+version1: Pulling from dockerashu/ashunode
+d52e4f012db1: Downloading [=======================>                           ]  23.36MB/49.55MB
+7dd206bea61f: Download complete 
+2320f9be4a9c: Download complete 
+6e5565e0ba8d: Downloading [=========>                                         ]  41.91MB/211MB
+5f1526a28cf9: Download complete 
+```
+
