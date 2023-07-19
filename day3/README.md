@@ -215,5 +215,9 @@ ashuc1
 
 ```
 
+## image sharing registry docker hub 
+
+<img src="reg.png">
+
 
 
