@@ -203,7 +203,17 @@ Successfully tagged ashunode:appv3
 ```
  docker run --name ashuc1 -d -p  1234:3000  ashunode:appv1 
 ```
+## removing container 
 
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ docker stop ashuc1
+ashuc1
+[ashu@ip-172-31-5-47 ashu-docker-images]$ docker rm ashuc1
+ashuc1
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+
+
+```
 
 
 
