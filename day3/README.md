@@ -129,6 +129,81 @@ REPOSITORY                TAG       IMAGE ID       CREATED              SIZE
 ankitanode                v1        872d13c0d981   56 seconds ago       1.1GB
 ashunode                  appv1     d81cf98fe574   About a minute ago   1.1GB
 ```
+### creating another dockerfile 
+
+```
+FROM node:alpine
+LABEL email=ashutoshh@delvex.io
+RUN mkdir /myapp
+COPY node-demo-app-spinnaker /myapp/
+WORKDIR /myapp
+# to change folder location 
+RUN npm install 
+CMD ["npm","start"]
+# use of CMD is to run this while creating container
+```
+
+### running it
+
+```
+[ashu@ip-172-31-5-47 node-app]$ ls
+Dockerfile  node-demo-app-spinnaker  trynew.dockerfile
+[ashu@ip-172-31-5-47 node-app]$ docker build -t  ashunode:appv3 -f trynew.dockerfile  . 
+Sending build context to Docker daemon  32.77kB
+Step 1/7 : FROM node:alpine
+ ---> 49ee0e374837
+Step 2/7 : LABEL email=ashutoshh@delvex.io
+ ---> Running in 07a34f046018
+Removing intermediate container 07a34f046018
+ ---> baf1b6bd68e3
+Step 3/7 : RUN mkdir /myapp
+ ---> Running in 9b38f87af84d
+Removing intermediate container 9b38f87af84d
+ ---> 58407f50f5e0
+Step 4/7 : COPY node-demo-app-spinnaker /myapp/
+ ---> 547dd30177a2
+Step 5/7 : WORKDIR /myapp
+ ---> Running in 04443e6a13e9
+Removing intermediate container 04443e6a13e9
+ ---> 7b808cf76b47
+Step 6/7 : RUN npm install
+ ---> Running in c4cb9fbf8185
+npm WARN old lockfile 
+npm WARN old lockfile The package-lock.json file was created with an old version of npm,
+npm WARN old lockfile so supplemental metadata must be fetched from the registry.
+npm WARN old lockfile 
+npm WARN old lockfile This is a one-time fix-up, please be patient...
+npm WARN old lockfile 
+
+added 49 packages, and audited 50 packages in 2s
+
+3 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+npm notice 
+npm notice New minor version of npm available! 9.7.2 -> 9.8.0
+npm notice Changelog: <https://github.com/npm/cli/releases/tag/v9.8.0>
+npm notice Run `npm install -g npm@9.8.0` to update!
+npm notice 
+Removing intermediate container c4cb9fbf8185
+ ---> b1ba1bded42e
+Step 7/7 : CMD ["npm","start"]
+ ---> Running in a63b8a53b6c8
+Removing intermediate container a63b8a53b6c8
+ ---> 4feade147a07
+Successfully built 4feade147a07
+Successfully tagged ashunode:appv3
+```
+
+### creating container
+
+```
+ docker run --name ashuc1 -d -p  1234:3000  ashunode:appv1 
+```
+
 
 
 
