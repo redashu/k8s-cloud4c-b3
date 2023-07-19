@@ -1,1 +1,134 @@
 # k8s-cloud4c-b3
+## Revision 
+
+<img src="rev.png">
+
+## Nodejs app to container image
+
+### cloning app source code
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ ls
+java-app  node-app  python-app  webui-app
+
+[ashu@ip-172-31-5-47 ashu-docker-images]$ cd node-app/
+[ashu@ip-172-31-5-47 node-app]$ ls
+[ashu@ip-172-31-5-47 node-app]$ git clone https://github.com/redashu/node-demo-app-spinnaker.git
+Cloning into 'node-demo-app-spinnaker'...
+remote: Enumerating objects: 71, done.
+remote: Counting objects: 100% (2/2), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 71 (delta 0), reused 0 (delta 0), pack-reused 69
+Receiving objects: 100% (71/71), 15.73 KiB | 5.24 MiB/s, done.
+Resolving deltas: 100% (29/29), done.
+
+[ashu@ip-172-31-5-47 node-app]$ ls
+node-demo-app-spinnaker
+
+
+[ashu@ip-172-31-5-47 node-app]$ ls node-demo-app-spinnaker/
+backup.dockerfile  demo-app.yml         index.js  Makefile      package-lock.json
+debian             Dockerfile.builddep  init      package.json  README.md
+[ashu@ip-172-31-5-47 node-app]$ 
+```
+
+### Add Dockerfile into source code 
+
+### Dockerfile
+
+```
+FROM node
+LABEL email=ashutoshh@delvex.io
+RUN mkdir /myapp
+COPY node-demo-app-spinnaker /myapp/
+WORKDIR /myapp
+# to change folder location 
+RUN npm install 
+CMD ["npm","start"]
+# use of CMD is to run this while creating container
+```
+
+### .dockerignore
+
+```
+node-demo-app-spinnaker/README.md
+node-demo-app-spinnaker/.git
+node-demo-app-spinnaker/backup.dockerfile
+
+```
+
+### time to build it
+
+```
+[ashu@ip-172-31-5-47 node-app]$ docker build -t ashunode:appv1  . 
+Sending build context to Docker daemon  31.74kB
+Step 1/7 : FROM node
+latest: Pulling from library/node
+d52e4f012db1: Already exists 
+7dd206bea61f: Already exists 
+2320f9be4a9c: Already exists 
+6e5565e0ba8d: Already exists 
+5f1526a28cf9: Pull complete 
+b9c7405b482f: Pull complete 
+9db0bc99587b: Pull complete 
+8e1c8c1907a5: Pull complete 
+Digest: sha256:b3ca7d32f0c12291df6e45a914d4ee60011a3fce4a978df5e609e356a4a2cb88
+Status: Downloaded newer image for node:latest
+ ---> b098c9ebef91
+Step 2/7 : LABEL email=ashutoshh@delvex.io
+ ---> Running in dc2ba73f2af4
+Removing intermediate container dc2ba73f2af4
+ ---> 6a42e723d5eb
+Step 3/7 : RUN mkdir /myapp
+ ---> Running in 4df1a4681f31
+Removing intermediate container 4df1a4681f31
+ ---> 1d51a7908ea3
+Step 4/7 : COPY node-demo-app-spinnaker /myapp/
+ ---> 5c432a25ae59
+Step 5/7 : WORKDIR /myapp
+ ---> Running in ba96f273ac65
+Removing intermediate container ba96f273ac65
+ ---> a34bbca6e9ea
+Step 6/7 : RUN npm install
+ ---> Running in 3f7cda444780
+npm WARN old lockfile 
+npm WARN old lockfile The package-lock.json file was created with an old version of npm,
+npm WARN old lockfile so supplemental metadata must be fetched from the registry.
+npm WARN old lockfile 
+npm WARN old lockfile This is a one-time fix-up, please be patient...
+npm WARN old lockfile 
+
+added 49 packages, and audited 50 packages in 2s
+
+3 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+npm notice 
+npm notice New minor version of npm available! 9.7.2 -> 9.8.0
+npm notice Changelog: <https://github.com/npm/cli/releases/tag/v9.8.0>
+npm notice Run `npm install -g npm@9.8.0` to update!
+npm notice 
+Removing intermediate container 3f7cda444780
+ ---> 2b64eddce042
+Step 7/7 : CMD ["npm","start"]
+ ---> Running in 116025dd409a
+Removing intermediate container 116025dd409a
+ ---> d81cf98fe574
+Successfully built d81cf98fe574
+Successfully tagged ashunode:appv1
+```
+
+### verify image 
+
+```
+ashu@ip-172-31-5-47 node-app]$ docker images 
+REPOSITORY                TAG       IMAGE ID       CREATED              SIZE
+ankitanode                v1        872d13c0d981   56 seconds ago       1.1GB
+ashunode                  appv1     d81cf98fe574   About a minute ago   1.1GB
+```
+
+
+
