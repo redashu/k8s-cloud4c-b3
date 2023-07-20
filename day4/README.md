@@ -76,4 +76,37 @@ kustomizeVersion: v5.0.1
 
 <img src="apis.png">
 
+### location of api-server cred file on master node
 
+```
+[root@masternode ~]# cd  /etc/kubernetes/
+[root@masternode kubernetes]# ls
+admin.conf
+```
+
+### after downloading admin.conf to the client location lets verify connection 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ ls
+admin.conf  java-app  node-app  python-app  webui-app
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl  cluster-info    --kubeconfig  admin.conf  
+Kubernetes control plane is running at https://13.200.76.193:6443
+CoreDNS is running at https://13.200.76.193:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+
+```
+
+### checking node info using kubectl 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl  get nodes  --kubeconfig  admin.conf 
+NAME         STATUS   ROLES           AGE   VERSION
+masternode   Ready    control-plane   19h   v1.27.3
+node1        Ready    <none>          19h   v1.27.3
+node2        Ready    <none>          19h   v1.27.3
+node3        Ready    <none>          19h   v1.27.3
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+```
