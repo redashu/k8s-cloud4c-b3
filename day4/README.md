@@ -130,3 +130,56 @@ node2        Ready    <none>          20h   v1.27.3
 node3        Ready    <none>          20h   v1.27.3
 ```
 
+## Etcd in master node
+
+<img src="etcd.png">
+
+## to deploy any app -- it must be available to any Registry like docker hub 
+
+<img src="deploy.png">
+
+### introduction to pod
+
+<img src="pod.png">
+
+### creating manifest file and sending it to the api-server 
+
+<img src="pod1.png">
+
+### fixed manifest keywords
+
+<img src="mani.png">
+
+## Pod Manifest file 
+
+```
+apiVersion: v1 
+kind: Pod 
+metadata: # info about Kind (pod)
+  name: ashu-node-pod1  # name of my pod  
+spec:  # everything we need to create pod 
+  containers: # planning containers here 
+  - name: ashuc1 
+    image: docker.io/dockerashu/ashunode:version1 # image from docker hub  
+    ports: # container app port info -- optional these days 
+    - containerPort: 3000 
+
+
+```
+
+### lets deploy it 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ ls
+java-app  k8s-manifests  node-app  python-app  webui-app
+[ashu@ip-172-31-5-47 ashu-docker-images]$ cd  k8s-manifests/
+[ashu@ip-172-31-5-47 k8s-manifests]$ ls
+ashupod1.yaml
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create  -f  ashupod1.yaml  
+pod/ashu-node-pod1 created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  pods 
+NAME             READY   STATUS    RESTARTS   AGE
+ashu-node-pod1   1/1     Running   0          35s
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+```
