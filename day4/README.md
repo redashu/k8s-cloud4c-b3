@@ -110,3 +110,23 @@ node2        Ready    <none>          19h   v1.27.3
 node3        Ready    <none>          19h   v1.27.3
 [ashu@ip-172-31-5-47 ashu-docker-images]$ 
 ```
+
+### lets copy admin.conf to its default location 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ whoami
+ashu
+[ashu@ip-172-31-5-47 ashu-docker-images]$ mkdir  ~/.kube 
+mkdir: cannot create directory ‘/home/ashu/.kube’: File exists
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+[ashu@ip-172-31-5-47 ashu-docker-images]$ cp  admin.conf   ~/.kube/config 
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl  get nodes  
+NAME         STATUS   ROLES           AGE   VERSION
+masternode   Ready    control-plane   20h   v1.27.3
+node1        Ready    <none>          20h   v1.27.3
+node2        Ready    <none>          20h   v1.27.3
+node3        Ready    <none>          20h   v1.27.3
+```
+
