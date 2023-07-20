@@ -49,3 +49,31 @@ PS C:\Users\humanfirmware\Downloads> .\kubectl.exe  version --client   -o json
   "kustomizeVersion": "v5.0.1"
 }
 ```
+
+### kubectl syntax is same from any OS 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl version --client  -o yaml
+clientVersion:
+  buildDate: "2023-06-14T09:53:42Z"
+  compiler: gc
+  gitCommit: 25b4e43193bcda6c7328a6d147b1fb73a33f1598
+  gitTreeState: clean
+  gitVersion: v1.27.3
+  goVersion: go1.20.5
+  major: "1"
+  minor: "27"
+  platform: linux/amd64
+kustomizeVersion: v5.0.1
+
+```
+
+## Understanding k8s architecture components
+
+# COntrol plane 
+
+### api-server 
+
+<img src="apis.png">
+
+
