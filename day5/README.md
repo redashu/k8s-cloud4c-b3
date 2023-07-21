@@ -107,3 +107,45 @@ pod "ashu-node-pod1" deleted
 
 ```
 
+## Understanding manifest file yaml or auto creation 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   run  ashupod1  --image=docker.io/dockerashu/ashunode:version1  --port 3000 --dry-run=client -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod1
+  name: ashupod1
+spec:
+  containers:
+  - image: docker.io/dockerashu/ashunode:version1
+    name: ashupod1
+    ports:
+    - containerPort: 3000
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   run  ashupod1  --image=docker.io/dockerashu/ashunode:version1  --port 3000 --dry-run=client -o json 
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "ashupod1",
+        "creationTimestamp": null,
+        "labels": {
+            "run": "ashupod1"
+        }
+```
+
+### saving outfile
+
+```
+232  kubectl   run  ashupod1  --image=docker.io/dockerashu/ashunode:version1  --port 3000 --dry-run=client -o json >mypod.json 
+  233  kubectl   run  ashupod1  --image=docker.io/dockerashu/ashunode:version1  --port 3000 --dry-run=client -o yaml >auto.yaml  
+```
+
