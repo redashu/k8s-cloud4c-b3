@@ -186,3 +186,51 @@ ashupod1   1/1     Running   0          9s    192.168.135.34   node3   <none>   
 
 ```
 
+### Deleting all the pods
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  delete pods --all
+pod "abbaspod1" deleted
+pod "adithya-node-pod2" deleted
+pod "adithyapod1" deleted
+pod "adithyapod3" deleted
+pod "ankitapod2" deleted
+pod "ashupod1" deleted
+pod "dasa-node-pod1" deleted
+pod "girish-node-pod1" deleted
+```
+
+## Introducing namespaces in k8s
+
+<img src="ns.png">
+
+### namespace listing 
+
+<img src="ns1.png">
+
+### creating namespace
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   create  namespace  ashu-apps  --dry-run=client -o yaml  >ns.yaml 
+[ashu@ip-172-31-5-47 k8s-manifests]$ ls
+ashupod1.yaml  auto.yaml  mypod.json  ns.yaml
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create  -f  ns.yaml 
+namespace/ashu-apps created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  ns
+NAME              STATUS   AGE
+ashu-apps         Active   7s
+default           Active   44h
+```
+
+### setting custom namespace as default 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  config  set-context --current --namespace=ashu-apps
+Context "kubernetes-admin@kubernetes" modified.
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  pods
+No resources found in ashu-apps namespace.
+```
+
+
+
