@@ -148,4 +148,41 @@ status: {}
 232  kubectl   run  ashupod1  --image=docker.io/dockerashu/ashunode:version1  --port 3000 --dry-run=client -o json >mypod.json 
   233  kubectl   run  ashupod1  --image=docker.io/dockerashu/ashunode:version1  --port 3000 --dry-run=client -o yaml >auto.yaml  
 ```
+### scheduling pod in particular node 
+
+### manifest of pod 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod1
+  name: ashupod1
+spec:
+  nodeName: node3 # static scheduling 
+  containers:
+  - image: docker.io/dockerashu/ashunode:version1
+    name: ashupod1
+    ports:
+    - containerPort: 3000
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+```
+
+### creating it
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl create  -f  auto.yaml 
+pod/ashupod1 created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  pod ashupod1  -o wide
+NAME       READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+ashupod1   1/1     Running   0          9s    192.168.135.34   node3   <none>           <none>
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+```
 
