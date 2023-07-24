@@ -103,3 +103,30 @@ root@ashuwebapp:/#
 
 ```
 
+## user and dev traffic 
+
+<img src="dev.png">
+
+
+### End user traffice is like -- user -- http --->nodes---pods
+
+<img src="unp.png">
+
+### incase of pod count increase we need internal Load like -- users--http--nodes-->Nodes{lb-->pods}
+
+<img src="finalnet.png">
+
+### to creating k8s internal LB we have new api-resource called service
+
+<img src="svc.png">
+
+### service is having 4 kind -- we will be using Nodeport / Loadbalnancer service type
+
+<img src="stype.png">
+
+### understanding of nodeport service model in k8s 
+
+<img src="svcm.png">
+
+
+
