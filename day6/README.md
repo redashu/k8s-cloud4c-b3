@@ -128,5 +128,57 @@ root@ashuwebapp:/#
 
 <img src="svcm.png">
 
+### creating nodeport service -- using manifest 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  pods
+NAME         READY   STATUS    RESTARTS   AGE
+ashuwebapp   1/1     Running   0          65m
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  expose  pod  ashuwebapp  --type NodePort --port 80 --name ashulb --dry-run=client -o yaml  >nodeportsvc.yaml 
+[ashu@ip-172-31-5-47 k8s-m
+```
+
+### check yaml manifest of the nodeport service
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashuwebapp
+  name: ashulb # name of Lb 
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: ashuwebapp
+  type: NodePort # type of service 
+status:
+  loadBalancer: {}
+
+```
+
+### creating Nodeport service for LB 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ ls
+ashupod1.yaml  auto.yaml  mypod.json  nodeportsvc.yaml  ns.yaml  webapp.yaml
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl create -f nodeportsvc.yaml 
+service/ashulb created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  service
+NAME     TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+ashulb   NodePort   10.109.180.49   <none>        80:30736/TCP   6s
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+```
+
+
+### visual 
+
+<img src="vs.png">
 
 
