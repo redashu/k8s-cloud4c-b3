@@ -21,7 +21,7 @@ CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPAC
 
 ### node to control plane networking 
 
-<img src="node1.png">
+<img src="nod1.png">
 
 ### pod to pod networking 
 
