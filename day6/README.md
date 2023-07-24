@@ -17,3 +17,14 @@ CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPAC
 
 ```
 
+## Networking in k8s -- 
+
+### node to control plane networking 
+
+<img src="node1.png">
+
+### pod to pod networking 
+
+<img src="net1.png">
+
+
