@@ -143,3 +143,56 @@ ashulb7     NodePort       10.102.210.233   <none>        80:32459/TCP   16m
 [ashu@ip-172-31-5-47 k8s-manifests]$ 
 ```
 
+### svc finding pods
+
+<img src="lbs.png">
+
+### checking lable or stamp of the pods
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get pods --show-labels 
+NAME           READY   STATUS    RESTARTS       AGE   LABELS
+ashupod-day7   1/1     Running   0              43m   run=ashupod-day7
+ashuwebapp     1/1     Running   2 (164m ago)   24h   run=ashuwebapp
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+```
+
+### patching service yaml to change label 
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-lb77
+  name: ashu-lb77
+spec:
+  ports:
+  - name: 80-80
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector: # pod finder using pod label 
+    run: ashupod-day7 # label of my ui pod 
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+```
+
+### redeploy service 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  replace -f lbsvc.yaml  --force 
+service "ashu-lb77" deleted
+service/ashu-lb77 replaced
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  svc
+NAME        TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashu-lb77   LoadBalancer   10.111.141.120   <pending>     80:32018/TCP   13s
+ashulb      NodePort       10.109.180.49    <none>        80:30736/TCP   23h
+ashulb7     NodePort       10.102.210.233   <none>        80:32459/TCP   39m
+```
+
+
