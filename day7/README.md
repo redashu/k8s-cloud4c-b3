@@ -86,3 +86,27 @@ NAME           READY   STATUS              RESTARTS       AGE
 ashupod-day7   0/1     ContainerCreating   0              3s
 ```
 
+### service creation options
+
+<img src="svc_creation.png">
+
+### using expose commmand to create service manifest 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  pods
+NAME           READY   STATUS    RESTARTS       AGE
+ashupod-day7   1/1     Running   0              8m12s
+ashuwebapp     1/1     Running   2 (130m ago)   23h
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  expose pod ashupod-day7  --type NodePort --port 80 --name ashulb7 --dry-run=client -o yaml  >day7svc.yaml 
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f day7svc.yaml 
+service/ashulb7 created
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  svc
+NAME      TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashulb    NodePort   10.109.180.49    <none>        80:30736/TCP   22h
+ashulb7   NodePort   10.102.210.233   <none>        80:32459/TCP   3s
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+```
+
+
