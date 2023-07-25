@@ -72,3 +72,17 @@ The push refers to repository [docker.io/dockerashu/ashu-app]
 9fdfd12bc85b: Layer already exists 
 f36897eea34d: Layer already exists 
 ```
+
+## Deploy image into k8s 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  run  ashupod-day7   --image=dockerashu/ashu-app:uiv1 --port 80 --dry-run=client -o yaml  >day7_pod.yaml 
+[ashu@ip-172-31-5-47 k8s-manifests]$ ls
+ashupod1.yaml  auto.yaml  day7_pod.yaml  mypod.json  nodeportsvc.yaml  ns.yaml  webapp.yaml
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f day7_pod.yaml 
+pod/ashupod-day7 created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  pods
+NAME           READY   STATUS              RESTARTS       AGE
+ashupod-day7   0/1     ContainerCreating   0              3s
+```
+
