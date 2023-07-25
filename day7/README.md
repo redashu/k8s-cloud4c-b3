@@ -195,4 +195,13 @@ ashulb      NodePort       10.109.180.49    <none>        80:30736/TCP   23h
 ashulb7     NodePort       10.102.210.233   <none>        80:32459/TCP   39m
 ```
 
+### problem with pods
+
+<img src="podb.png">
+
+### Introduction to controller in k8s
+
+<img src="cont.png">
+
+
 
