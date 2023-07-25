@@ -20,3 +20,24 @@ Resolving deltas: 100% (5/5), done.
 html-sample-app
 [ashu@ip-172-31-5-47 new-webapp]$ 
 ```
+
+### Dockerfile and .dockerignore adding to the source code
+
+```
+html-sample-app/.git
+html-sample-app/*.txt
+```
+
+### 
+
+```
+FROM nginx
+LABEL name=ashutoshh
+COPY html-sample-app /usr/share/nginx/html/
+```
+
+### lets build image 
+
+```
+
+```
