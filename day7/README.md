@@ -108,5 +108,38 @@ ashulb    NodePort   10.109.180.49    <none>        80:30736/TCP   22h
 ashulb7   NodePort   10.102.210.233   <none>        80:32459/TCP   3s
 [ashu@ip-172-31-5-47 k8s-manifests]$ 
 ```
+### service creation conditions 
 
+<img src="svc1.png">
+
+### creating service using create service request
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create  service
+Create a service using a specified subcommand.
+
+Aliases:
+service, svc
+
+Available Commands:
+  clusterip      Create a ClusterIP service
+  externalname   Create an ExternalName service
+  loadbalancer   Create a LoadBalancer service
+  nodeport       Create a NodePort service
+
+Usage:
+  kubectl create service [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create  service  loadbalancer ashu-lb77  --tcp  80:80 --dry-run=client -o yaml >lbsvc.yaml 
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f  lbsvc.yaml 
+service/ashu-lb77 created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  svc
+NAME        TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashu-lb77   LoadBalancer   10.98.157.110    <pending>     80:30782/TCP   3s
+ashulb      NodePort       10.109.180.49    <none>        80:30736/TCP   23h
+ashulb7     NodePort       10.102.210.233   <none>        80:32459/TCP   16m
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+```
 
