@@ -203,5 +203,9 @@ ashulb7     NodePort       10.102.210.233   <none>        80:32459/TCP   39m
 
 <img src="cont.png">
 
+## Introduction to deployment controller in k8s 
+
+<img src="deploy.png">
+
 
 
