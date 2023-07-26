@@ -152,4 +152,30 @@ ashu-node-deploy-5f6dbfdd46-rl8b7   1/1     Running   0          16s    192.168.
 eyJhbGciOiJSUzI1NiIsImtpZCI6InlYNW5VdTJrc0JESW1pUk9KUnhYUVdtTnNwNXhwQkNFZVl0ZDh4SS16TW8ifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjox
 ```
 
+### understanding networking with deploy 
+<img src="net1.png">
+
+### creating service by exposing deployment controller
+
+<img src="ddss.png">
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f deployment.yaml 
+deployment.apps/ashu-node-deploy created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  deploy 
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-node-deploy   3/3     3            3           3s
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  expose  deployment  ashu-node-deploy  --type  NodePort --port 3000  --dry-run=client -o yaml >day8svc.yaml
+[ashu@ip-172-31-5-47 k8s-manifests]$
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f day8svc.yaml 
+service/ashu-node-deploy created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  svc
+NAME               TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+ashu-node-deploy   NodePort   10.110.139.93   <none>        3000:32134/TCP   4s
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+
+```
 
