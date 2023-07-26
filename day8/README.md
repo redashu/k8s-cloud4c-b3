@@ -145,4 +145,11 @@ ashu-node-deploy-5f6dbfdd46-rl8b7   1/1     Running   0          16s    192.168.
 [ashu@ip-172-31-5-47 k8s-manifests]$ 
 ```
 
+### to get the dashboard token -- 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  -n kubernetes-dashboard  create  token kubernetes-dashboard  
+eyJhbGciOiJSUzI1NiIsImtpZCI6InlYNW5VdTJrc0JESW1pUk9KUnhYUVdtTnNwNXhwQkNFZVl0ZDh4SS16TW8ifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjox
+```
+
 
