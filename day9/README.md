@@ -19,4 +19,4 @@ calico-node-jlvpf                          1/1     Running   12 (25m ago)   7d19
 calico-node-tbj8x                          1/1     Running   12 (25m ago)   7d19h
 ```
 
-
+###  Controllers --- 
