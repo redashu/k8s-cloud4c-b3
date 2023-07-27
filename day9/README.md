@@ -208,3 +208,20 @@ ashu-react-app-5459dcbbf7-sm8p5   1/1     Running   0          9s
 
 ```
 
+### creating loadbalnacer/nodeport service using expose of deployment 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  deploy
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-react-app   1/1     1            1           8m32s
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   expose  deployment  ashu-react-app  --type  LoadBalancer  --port 3000 --name ashulb1 --dry-run=client -o yaml >lbday9.yaml
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f lbday9.yaml 
+service/ashulb1 created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  svc
+NAME      TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashulb1   LoadBalancer   10.97.60.145   <pending>     3000:32701/TCP   4s
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+```
+
+
