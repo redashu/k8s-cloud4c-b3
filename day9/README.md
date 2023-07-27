@@ -255,4 +255,42 @@ ashu-react-app   4/4     4            4           17m
 
 ```
 
+### Using chatGPt based solution 
+
+```
+[ashu@ip-172-31-5-47 tasks]$ kubectl  create -f svcng.yaml 
+service/nginx-service created
+[ashu@ip-172-31-5-47 tasks]$ kubectl  get po
+NAME          READY   STATUS    RESTARTS   AGE
+[ashu@ip-172-31-5-47 tasks]$ 
+[ashu@ip-172-31-5-47 tasks]$ 
+[ashu@ip-172-31-5-47 tasks]$ kubectl  get po --show-labels 
+NAME          READY   STATUS    RESTARTS   AGE     LABELS
+busybox-pod   1/1     Running   0          6m32s   <none>
+nginx-pod     1/1     Running   0          3m38s   delvex=ashup11
+[ashu@ip-172-31-5-47 tasks]$ 
+[ashu@ip-172-31-5-47 tasks]$ 
+[ashu@ip-172-31-5-47 tasks]$ kubectl  get svc -o wide
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+nginx-service   ClusterIP   10.99.186.237   <none>        80/TCP    84s   delvex=ashup11
+[ashu@ip-172-31-5-47 tasks]$ 
+[ashu@ip-172-31-5-47 tasks]$ 
+[ashu@ip-172-31-5-47 tasks]$ kubectl  get  endpoints 
+NAME            ENDPOINTS           AGE
+nginx-service   192.168.135.16:80   103s
+[ashu@ip-172-31-5-47 tasks]$ kubectl  get po nginx-pod -o wide
+NAME        READY   STATUS    RESTARTS   AGE     IP               NODE    NOMINATED NODE   READINESS GATES
+nginx-pod   1/1     Running   0          4m11s   192.168.135.16   node3   <none>           <none>
+[ashu@ip-172-31-5-47 tasks]$ kubectl  exec -it busybox-pod -- sh 
+/ # 
+/ # wget  http://10.99.186.237
+Connecting to 10.99.186.237 (10.99.186.237:80)
+saving to 'index.html'
+index.html           100% |******************************************************************************|   615  0:00:00 ETA
+'index.html' saved
+/ # wget  http://10.99.186.237 -o /tmp/mypage.txt
+/ # cat /tmp/mypage.txt 
+Connecting to 10.99.186.237 (10.99.186.237:80)
+```
+
 
