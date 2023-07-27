@@ -102,3 +102,48 @@ ashu-cred   kubernetes.io/dockerconfigjson   1      9s
 
 
 ```
+
+### creating pod manifest
+
+```
+kubectl  run  ashupod1 --image=cloud4c.azurecr.io/reactjs:v1.1 --port 3000   --dry-run=client -o yaml >day9pod.yaml
+```
+
+### updating manifest to use secret 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod1
+  name: ashupod1
+spec:
+  imagePullSecrets: # to call secret 
+  - name: ashu-cred # name of secret resource 
+  containers:
+  - image: cloud4c.azurecr.io/reactjs:v1.1
+    name: ashupod1
+    ports:
+    - containerPort: 3000
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+```
+
+### deploy it
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f  day9pod.yaml 
+pod/ashupod1 created
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  pods
+NAME       READY   STATUS              RESTARTS   AGE
+ashupod1   0/1     ContainerCreating   0          3s
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get  pods
+NAME       READY   STATUS    RESTARTS   AGE
+ashupod1   1/1     Running   0          46s
+```
+
