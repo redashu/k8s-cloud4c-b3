@@ -224,4 +224,35 @@ ashulb1   LoadBalancer   10.97.60.145   <pending>     3000:32701/TCP   4s
 
 ```
 
+### scaling pod 
+
+<img src="scale.png">
+
+### scaling pod manually without changing manifest file
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  deploy
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-react-app   1/1     1            1           16m
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  scale  deployment   ashu-react-app --replicas 4
+deployment.apps/ashu-react-app scaled
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  deploy
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-react-app   3/4     4            3           17m
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  po
+NAME                              READY   STATUS    RESTARTS   AGE
+ashu-react-app-5459dcbbf7-7c4bj   1/1     Running   0          22s
+ashu-react-app-5459dcbbf7-gcz6s   1/1     Running   0          22s
+ashu-react-app-5459dcbbf7-sm8p5   1/1     Running   0          17m
+ashu-react-app-5459dcbbf7-x68fn   1/1     Running   0          22s
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  deploy
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-react-app   4/4     4            4           17m
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+```
+
 
