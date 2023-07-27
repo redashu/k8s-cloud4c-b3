@@ -147,3 +147,64 @@ NAME       READY   STATUS    RESTARTS   AGE
 ashupod1   1/1     Running   0          46s
 ```
 
+### best way to deploy a container image using deployment not using pod 
+
+```
+kubectl  create deployment  ashu-react-app --image=cloud4c.azurecr.io/reactjs:v1.1 --port 3000 --dry-run=client -o yaml  >day9_deployment.yaml 
+```
+
+### call secret in deployment manifest file
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-react-app
+  name: ashu-react-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-react-app
+  strategy: {}
+  template: # used by deployment to create pods 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-react-app
+    spec:
+      imagePullSecrets: # calling secret 
+      - name: ashu-cred  # name of secret
+      containers:
+      - image: cloud4c.azurecr.io/reactjs:v1.1
+        name: reactjs
+        ports:
+        - containerPort: 3000
+        resources: {}
+status: {}
+
+```
+
+### deploy it 
+
+```
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f day9_deployment.yaml 
+deployment.apps/ashu-react-app created
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get deploy
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-react-app   1/1     1            1           3s
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get rs
+NAME                        DESIRED   CURRENT   READY   AGE
+ashu-react-app-5459dcbbf7   1         1         1       6s
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  get po
+NAME                              READY   STATUS    RESTARTS   AGE
+ashu-react-app-5459dcbbf7-sm8p5   1/1     Running   0          9s
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+
+```
+
