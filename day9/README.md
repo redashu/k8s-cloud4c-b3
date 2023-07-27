@@ -19,4 +19,86 @@ calico-node-jlvpf                          1/1     Running   12 (25m ago)   7d19
 calico-node-tbj8x                          1/1     Running   12 (25m ago)   7d19h
 ```
 
-###  Controllers --- 
+###  Controllers ---  deploy new image using deployment controller 
+
+### cleaning namespace resources 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl config get-contexts 
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   ashu-apps
+
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl   get  all
+NAME                                    READY   STATUS    RESTARTS      AGE
+pod/ashu-node-deploy-5f6dbfdd46-wcktm   1/1     Running   2 (42m ago)   22h
+pod/ashu-node-deploy-5f6dbfdd46-xwxdk   1/1     Running   2 (42m ago)   22h
+pod/ashu-node-deploy-5f6dbfdd46-zzwk8   1/1     Running   2 (42m ago)   22h
+
+NAME                       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/ashu-node-deploy   NodePort   10.110.139.93   <none>        3000:32134/TCP   22h
+
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/ashu-node-deploy   3/3     3            3           22h
+
+NAME                                          DESIRED   CURRENT   READY   AGE
+replicaset.apps/ashu-node-deploy-5f6dbfdd46   3         3         3       22h
+
+
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl  delete all --all
+pod "ashu-node-deploy-5f6dbfdd46-wcktm" deleted
+pod "ashu-node-deploy-5f6dbfdd46-xwxdk" deleted
+pod "ashu-node-deploy-5f6dbfdd46-zzwk8" deleted
+service "ashu-node-deploy" deleted
+```
+
+### testing of creation of pod using private image registry 
+
+```
+ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl  run  ashupod1 --image=cloud4c.azurecr.io/reactjs:v1.1 --port 3000 
+pod/ashupod1 created
+
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl   get  pods
+NAME       READY   STATUS             RESTARTS   AGE
+ashupod1   0/1     ImagePullBackOff   0          9s
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+
+```
+
+### checking events for reason purpose 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl   get  events  |  grep error
+2m55s       Warning   Failed                   pod/ashupod1                             Failed to pull image "cloud4c.azurecr.io/reactjs:v1.1": rpc error: code = Unknown desc = failed to pull and unpack image "cloud4c.azurecr.io/reactjs:v1.1": failed to resolve reference "cloud4c.azurecr.io/reactjs:v1.1": failed to authorize: failed to fetch anonymous token: unexpected status: 401 Unauthorized
+[ashu@ip-172-31-5-47 ashu-docker-imag
+```
+
+### using secret to store any confidential info in k8s then use by pod or controlles
+
+<img src="secret.png">
+
+### creating secret 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl   create secret 
+Create a secret using specified subcommand.
+
+Available Commands:
+  docker-registry   Create a secret for use with a Docker registry
+  generic           Create a secret from a local file, directory, or literal value
+  tls               Create a TLS secret
+
+Usage:
+  kubectl create secret [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl   create secret  docker-registry  ashu-cred --docker-server="cloud4c.azurecr.io" --docker-username="cloud4c"  --docker-password="iFTcesAY+ACRAdtpmj"  
+secret/ashu-cred created
+[ashu@ip-172-31-5-47 ashu-docker-images]$ kubectl  get  secret
+NAME        TYPE                             DATA   AGE
+ashu-cred   kubernetes.io/dockerconfigjson   1      9s
+[ashu@ip-172-31-5-47 ashu-docker-images]$ 
+
+
+```
