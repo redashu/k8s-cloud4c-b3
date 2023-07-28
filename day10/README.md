@@ -68,3 +68,8 @@ dashboard-metrics-scraper-5cb4f4bb9c-b8rpp   1/1     Running   6 (44m ago)   3d
 kubernetes-dashboard-6967859bff-msxh2        1/1     Running   6 (44m ago)   3d
 ```
 
+### sending request of any-type to any namespace is super easy -- If you have permission 
+
+<img src="ns-send.png">
+
+
