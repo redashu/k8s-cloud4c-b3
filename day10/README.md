@@ -72,4 +72,162 @@ kubernetes-dashboard-6967859bff-msxh2        1/1     Running   6 (44m ago)   3d
 
 <img src="ns-send.png">
 
+### k8s - must know things 
+
+<img src="msk.png">
+
+## lets test -- merge manifest 
+
+--- 
+ashu.yaml
+---
+```
+# deployment manifest 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-app
+  name: ashu-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-app
+    spec:
+      containers:
+      - image: cloud4c.azurecr.io/day10-web:uiv1
+        name: day10-web
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+### creating nodeport service manifest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashulb10
+  name: ashulb10
+spec:
+  ports:
+  - name: 80-80
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ashulb10
+  type: NodePort
+status:
+  loadBalancer: {}
+# creating secretr
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJjbG91ZDRjLmF6dXJlY3IuaW8iOnsidXNlcm5hbWUiOiJjbG91ZDRjIiwicGFzc3dvcmQiOiI5MnhQREk1cC9Qc1YzWlFKSDZhcXAybHIvYTVNZlVlczR1bXJPbnlZV0QrQUNSQ25hYmRvaGNYQXliSEl2WVRWUVVOU1EyNWhZbVJ2In19fQ==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: ashu-img-secret
+type: kubernetes.io/dockerconfigjson
+```
+
+### final manifest merge file
+
+```
+# deployment manifest 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-app
+  name: ashu-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-app
+  strategy: {}
+  template: # to create pods 
+    metadata:
+      creationTimestamp: null
+      labels: # labels 
+        app: ashu-app
+    spec:
+      imagePullSecrets: # calling secret 
+      - name: ashu-img-secret # name of the secret 
+      containers:
+      - image: cloud4c.azurecr.io/day10-web:uiv1
+        name: day10-web
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+# creating nodeport service 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashulb10
+  name: ashulb10
+spec:
+  ports:
+  - name: 80-80
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector: # pod finder using label of pod
+    app: ashu-app # label of pod created by deployment 
+  type: NodePort
+status:
+  loadBalancer: {}
+# creating secret which will be used by deployment 
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJjbG91ZDRjLmF6dXJlY3IuaW8iOnsidXNlcm5hbWUiOiJjbG91ZDRjIiwicGFzc3dvcmQiOiI5MnhQREk1cC9Qc1YzWlFKSDZhcXAybHIvYTVNZlVlczR1bXJPbnlZV0QrQUNSQ25hYmRvIiwiYXV0aCI6IlkyeHZkV1EwWXpvNU1uaFFSRWsxY0M5UWMxWXpXbEZLU0RaaGNYQXliSEl2WVRWTlpsVmxjelIxYlhKUGJubFpWMFFyUVVOU1EyNWhZbVJ2In19fQ==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: ashu-img-secret # name of secret 
+type: kubernetes.io/dockerconfigjson
+```
+
+### time to deploy it 
+
+```
+ashu@ip-172-31-5-47 k8s-manifests]$ kubectl  create -f ashuapp.yaml 
+deployment.apps/ashu-app created
+service/ashulb10 created
+secret/ashu-img-secret created
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  secret 
+NAME              TYPE                             DATA   AGE
+ashu-cred         kubernetes.io/dockerconfigjson   1      24h
+ashu-img-secret   kubernetes.io/dockerconfigjson   1      12s
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  svc
+NAME       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+ashulb10   NodePort   10.96.176.201   <none>        80:30211/TCP   20s
+
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-app   1/1     1            1           26s
+[ashu@ip-172-31-5-47 k8s-manifests]$ kubectl   get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+ashu-app-68fbbb4b75-qwh5m   1/1     Running   0          31s
+[ashu@ip-172-31-5-47 k8s-manifests]$ 
+```
 
