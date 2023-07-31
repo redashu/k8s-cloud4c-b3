@@ -82,7 +82,7 @@ status: {}
 kubectl  create secret generic   ashudb-user-pass  --from-literal  MYSQL_USER=ashu --from-literal MYSQL_PASSWORD="Hello@098"  --dry-run=client -o yaml >general-user-pass-secret.yaml 
 ```
 
-### update in mysql-deployment manifest 
+### created secret again 
 
 ```
 [ashu@ip-172-31-5-47 day11-two-tierapp]$ ls
@@ -96,4 +96,62 @@ NAME               TYPE     DATA   AGE
 ashudb-root-pass   Opaque   1      22m
 ashudb-user-pass   Opaque   2      4s
 ```
+
+### updating manifest 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db
+  name: ashu-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-db
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        env: # to create / update cred of db 
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: ashudb-root-pass  # name of the secret 
+              key: mydbpass 
+        envFrom: # when secret is already having ENV name stored 
+        - secretRef:
+            name: ashudb-user-pass
+
+        
+         
+status: {}
+
+```
+
+### deploy again 
+
+```
+ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  apply -f mysql_deploy.yaml 
+Warning: resource deployments/ashu-db is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+deployment.apps/ashu-db configured
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl   get  po
+NAME                       READY   STATUS    RESTARTS   AGE
+ashu-db-77b6d86d6f-86ffd   1/1     Running   0          13s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ 
+```
+
 
