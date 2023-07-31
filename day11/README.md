@@ -37,9 +37,42 @@ ashudb-root-pass   Opaque   1      4s
 
 ```
 
-### using secret in deployment file 
+### using secret in deployment file to assign root / admin password of mysql db 
 
 ```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db
+  name: ashu-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-db
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        env: # to create / update cred of db 
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: ashudb-root-pass  # name of the secret 
+              key: mydbpass 
+         
+status: {}
 
 ```
 
