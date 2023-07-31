@@ -154,4 +154,23 @@ ashu-db-77b6d86d6f-86ffd   1/1     Running   0          13s
 [ashu@ip-172-31-5-47 day11-two-tierapp]$ 
 ```
 
+### MYSQL deployment final status
+
+```
+ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get secrets 
+NAME               TYPE     DATA   AGE
+ashudb-root-pass   Opaque   1      33m
+ashudb-user-pass   Opaque   2      11m
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-db   1/1     1            1           21m
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get po
+NAME                       READY   STATUS    RESTARTS   AGE
+ashu-db-77b6d86d6f-86ffd   1/1     Running   0          112s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ 
+
+
+```
 
