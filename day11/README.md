@@ -22,6 +22,19 @@ kubectl  create  deployment ashu-db --image=mysql:8.0  --port=3306 --dry-run=cli
 
 [ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  create  secret   generic  ashudb-root-pass  --from-literal  mydbpass="Db@12345" --dry-run=client -o yaml  >secret_root.yaml 
 
+=======>
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ ls
+mysql_deploy.yaml  secret_root.yaml
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ 
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  create  -f  secret_root.yaml 
+secret/ashudb-root-pass created
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  secret 
+NAME               TYPE     DATA   AGE
+ashudb-root-pass   Opaque   1      4s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$
+
 ```
 
 ### using secret in deployment file 
