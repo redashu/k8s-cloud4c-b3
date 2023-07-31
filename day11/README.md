@@ -76,3 +76,24 @@ status: {}
 
 ```
 
+### creating one more secret to store non admin db credential 
+
+```
+kubectl  create secret generic   ashudb-user-pass  --from-literal  MYSQL_USER=ashu --from-literal MYSQL_PASSWORD="Hello@098"  --dry-run=client -o yaml >general-user-pass-secret.yaml 
+```
+
+### update in mysql-deployment manifest 
+
+```
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ ls
+general-user-pass-secret.yaml  mysql_deploy.yaml  secret_root.yaml
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  create -f general-user-pass-secret.yaml 
+secret/ashudb-user-pass created
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  secrets 
+NAME               TYPE     DATA   AGE
+ashudb-root-pass   Opaque   1      22m
+ashudb-user-pass   Opaque   2      4s
+```
+
