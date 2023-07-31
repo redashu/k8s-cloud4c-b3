@@ -219,4 +219,39 @@ bash-4.4# exit
 exit
 ```
 
+## Db which is an internal component of any app -- need to have LB using ClusterIP type service
+
+<img src="svc1.png">
+
+### creating clusterIp type servcie
+
+```
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-db   1/1     1            1           50m
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ 
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  expose deployment ashu-db --type ClusterIP --port 3306 --name db-lb-ashu  --dry-run=client -o yaml >dbsvc.yaml
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ ls
+dbsvc.yaml  general-user-pass-secret.yaml  mysql_deploy.yaml  secret_root.yaml
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  create -f dbsvc.yaml 
+service/db-lb-ashu created
+[ashu@ip-172-31-5-47 day11-two-tierapp]$
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+db-lb-ashu   ClusterIP   10.102.140.206   <none>        3306/TCP   5s
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  po -o wide
+NAME                       READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+ashu-db-77b6d86d6f-86ffd   1/1     Running   0          31m   192.168.135.52   node3   <none>           <none>
+[ashu@ip-172-31-5-47 day11-two-tierapp]$
+
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  ep
+NAME         ENDPOINTS             AGE
+db-lb-ashu   192.168.135.52:3306   13s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ 
+```
 
