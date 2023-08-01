@@ -205,6 +205,114 @@ spec:
               key: mydbpass
 status: {}
 
+
 ```
+
+### INtroducing Secret and configmap understanding for developers
+
+<img src="cm.png">
+
+### creating configmap to store dbhost info
+
+```
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl create  configmap  ashu-db-details --from-
+--from-env-file  (Specify the path to a file to read lines of key=val pairs to create a configmap.)
+--from-file      (Key file can be specified using its file path, in which case file basename will be used as configmap key, o…)
+--from-literal   (Specify a key and literal value to insert in configmap (i.e. mykey=somevalue))
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl create  configmap  ashu-db-details --from-literal  db-connect="db-lb-ashu" --dry-run=client -o yaml >db_details_cm.yaml
+```
+
+### creating cm 
+
+```
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  create -f db_details_cm.yaml 
+configmap/ashu-db-details created
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get configmaps 
+NAME               DATA   AGE
+ashu-db-details    1      4s
+kube-root-ca.crt   1      10d
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get cm
+NAME               DATA   AGE
+ashu-db-details    1      7s
+kube-root-ca.crt   1      10d
+```
+
+### updating deployement manifest to consume it 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-web
+  name: ashu-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-web
+    spec:
+      containers:
+      - image: wordpress:6.2.1-apache
+        name: wordpress
+        ports:
+        - containerPort: 80
+        resources: {}
+        env: # create / user ENV variable and its data 
+        - name: WORDPRESS_DB_HOST
+          valueFrom: # reading value 
+            configMapKeyRef: # from configmap 
+              name: ashu-db-details # name of cm
+              key: db-connect # key of cm 
+        - name: WORDPRESS_DB_PASSWORD # web to connect db using admin cred
+          valueFrom:
+            secretKeyRef:
+              name: ashudb-root-pass
+              key: mydbpass
+status: {}
+
+```
+
+### time to deploy it 
+
+```
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl create -f webapp.yaml 
+deployment.apps/ashu-web created
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-db    1/1     1            1           24h
+ashu-web   0/1     1            0           9s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get po
+NAME                        READY   STATUS    RESTARTS      AGE
+ashu-db-77b6d86d6f-86ffd    1/1     Running   2 (72m ago)   23h
+ashu-web-54675d96f5-vcbpw   1/1     Running   0             14s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ 
+```
+
+### creating svc for webapp
+
+```
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-db    1/1     1            1           24h
+ashu-web   1/1     1            1           5m25s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  expose deployment ashu-web  --type NodePort --port 80 --name web-lb --dry-run=client -o yaml  >weblb.yaml
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  create -f weblb.yaml 
+service/web-lb created
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ kubectl  get  svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+db-lb-ashu   ClusterIP   10.102.140.206   <none>        3306/TCP       23h
+web-lb       NodePort    10.108.66.41     <none>        80:32441/TCP   3s
+[ashu@ip-172-31-5-47 day11-two-tierapp]$ 
+```
+
+
 
 
