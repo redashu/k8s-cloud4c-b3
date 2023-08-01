@@ -163,4 +163,48 @@ round-trip min/avg/max = 0.053/0.078/0.092 ms
 
 ```
 
+## Time to configure webapp manifest to DB connection 
+
+<img src="svcdns.png">
+
+### updating hostname and password 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-web
+  name: ashu-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-web
+    spec:
+      containers:
+      - image: wordpress:6.2.1-apache
+        name: wordpress
+        ports:
+        - containerPort: 80
+        resources: {}
+        env: # create / user ENV variable and its data 
+        - name: WORDPRESS_DB_HOST
+          value: db-lb-ashu # hostname of service which is point to db pod 
+        - name: WORDPRESS_DB_PASSWORD # web to connect db using admin cred
+          valueFrom:
+            secretKeyRef:
+              name: ashudb-root-pass
+              key: mydbpass
+status: {}
+
+```
+
 
