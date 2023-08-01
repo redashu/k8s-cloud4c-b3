@@ -266,17 +266,17 @@ spec:
         - containerPort: 80
         resources: {}
         env: # create / user ENV variable and its data 
+        - name: WORDPRESS_DB_USER
+          value: "ashu"
         - name: WORDPRESS_DB_HOST
           valueFrom: # reading value 
             configMapKeyRef: # from configmap 
               name: ashu-db-details # name of cm
               key: db-connect # key of cm 
         - name: WORDPRESS_DB_PASSWORD # web to connect db using admin cred
-          valueFrom:
-            secretKeyRef:
-              name: ashudb-root-pass
-              key: mydbpass
+          value: "Hello@098"
 status: {}
+
 
 ```
 
