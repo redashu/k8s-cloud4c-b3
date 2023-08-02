@@ -76,3 +76,82 @@ ingress-nginx-controller-admission   ClusterIP   10.98.51.224    <none>        4
 
 ```
 
+### testing ingress controller by 
+
+```
+mkdir  day13-ingress-test
+[ashu@ip-172-31-5-47 ashu-docker-images]$ cd day13-ingress-test/
+
+ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  create  deployment ashu-ui --image=dockerashu/reactapp:version1 --port 3000 --dry-run=client -o yaml    >deployweb.yaml
+
+===>
+[ashu@ip-172-31-5-47 day13-ingress-test]$ ls
+deployweb.yaml
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  create -f  deployweb.yaml 
+deployment.apps/ashu-ui created
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  get  deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-ui   0/1     1            0           4s
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  get  po
+NAME                       READY   STATUS    RESTARTS   AGE
+ashu-ui-56ff7756dd-ltrgg   1/1     Running   0          6s
+[ashu@ip-172-31-5-47 day13-ingress-test]$
+
+```
+
+### creating clusterIP type service
+
+```
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  get deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-ui   1/1     1            1           63s
+[ashu@ip-172-31-5-47 day13-ingress-test]$ 
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl   expose  deployment  ashu-ui  --type ClusterIP --port 3000 --name ashusvc1   --dry-run=client -o yaml >svc.yaml
+
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  create -f svc.yaml 
+service/ashusvc1 created
+
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  get svc
+NAME       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+ashusvc1   ClusterIP   10.106.137.53   <none>        3000/TCP   3s
+[ashu@ip-172-31-5-47 day13-ingress-test]$ 
+```
+
+### adding ingress manifest 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ashu-app-routing-rule # name of my routing rule 
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx # class name is nginx 
+  rules:
+  - host: me.ashutoshh.in # domain of webapp
+    http:
+      paths:
+      - path: / # app home page in / 
+        pathType: Prefix
+        backend:
+          service:
+            name: ashusvc1 # name of service 
+            port:
+              number: 3000 
+```
+
+### deploy routing rule
+
+```
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  create -f ingress.yaml 
+ingress.networking.k8s.io/ashu-app-routing-rule created
+[ashu@ip-172-31-5-47 day13-ingress-test]$ kubectl  get  ingress
+NAME                    CLASS   HOSTS             ADDRESS       PORTS   AGE
+ashu-app-routing-rule   nginx   me.ashutoshh.in   172.31.0.13   80      5s
+[ashu@ip-172-31-5-47 day13-ingress-test]$ 
+
+```
+
+
+
