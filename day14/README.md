@@ -90,6 +90,25 @@ NAME             CLASS   HOSTS             ADDRESS   PORTS   AGE
 ashu-app-route   nginx   me.ashutoshh.in             80      5s
 [ashu@ip-172-31-5-47 ingress-win]$ 
 ```
+### splunk solution 
+
+```
+  kubectl  create  deployment splunk1 --image=splunk/splunk:latest --port 8000 --dry-run=client -o yaml >splk.yaml 
+  944  kubectl  create configmap  licen  --from-literal  my-pic="--accept-license" --dry-run=client -o yaml >cm.yaml 
+  945  kubectl  apply -f cm.yaml 
+  946  kubectl  get cm
+  947  kubectl  create secret  generic  sec1 --from-literal mypass="Docker@12344" --dry-run=client -o yaml >secret.yaml
+  948  kubectl  create -f secret.yaml 
+  949  kubectl  get cm
+  950  kubectl  get secret
+  951  kubectl  apply -f splk.yaml 
+  952  kubectl  get deploy
+  953  kubectl  get po
+  954  kubectl  get deploy
+  955  kubectl  expose deployment splunk1 --type NodePort --port 8000 --dry-run=client -o yaml >spsvc.yaml
+  956  kubectl  apply -f spsvc.yaml 
+```
+
 
 
 
