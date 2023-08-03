@@ -56,3 +56,40 @@ ashulb1   NodePort   10.105.14.5   <none>        3000:32599/TCP   3s
 
 <img src="cls.png">
 
+### making changes
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ashu-app-route # name of ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx # class
+  rules:
+  - host: me.ashutoshh.in # url of your app
+    http:
+      paths:
+      - path: /  # home page
+        pathType: Prefix
+        backend:
+          service:
+            name: ashulb1 # name of svc
+            port:
+              number: 3000
+```
+
+### 
+
+```
+[ashu@ip-172-31-5-47 ingress-win]$ kubectl  apply -f route.yaml 
+ingress.networking.k8s.io/ashu-app-route created
+[ashu@ip-172-31-5-47 ingress-win]$ kubectl  get ingress
+NAME             CLASS   HOSTS             ADDRESS   PORTS   AGE
+ashu-app-route   nginx   me.ashutoshh.in             80      5s
+[ashu@ip-172-31-5-47 ingress-win]$ 
+```
+
+
+
