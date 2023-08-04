@@ -196,4 +196,8 @@ NAME                        READY   STATUS    RESTARTS   AGE
 ashu-app-66d6cdf75b-68f7q   1/1     Running   0 
 ```
 
+### target for next / final week 
+
+<img src="target.png">
+
 
