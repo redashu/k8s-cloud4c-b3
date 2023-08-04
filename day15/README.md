@@ -7,3 +7,8 @@ source <(kubectl completion bash)
 
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
+
+### Helm introduction 
+
+<img src="helm.png">
+
