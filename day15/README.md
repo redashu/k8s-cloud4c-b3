@@ -102,4 +102,98 @@ No resources found in ashu-apps namespace.
 
 ```
 
+### Pod auto scaling concept 
+
+<img src="auto.png">
+
+### HPA need some Monitoring engine which can monitor and store pod resource consumption 
+
+<img src="podmon.png">
+
+## HPA --demo
+
+### creating deployment 
+
+```
+[ashu@ip-172-31-5-47 ashu-docker-images]$ mkdir  hpa-demo
+[ashu@ip-172-31-5-47 ashu-docker-images]$ cd hpa-demo/
+[ashu@ip-172-31-5-47 hpa-demo]$ ls
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  create  deployment ashu-app --image=dockerashu/ashuweb-ui:app4 --port 80 --dry-run=client  -oyaml >deploy.yaml 
+[ashu@ip-172-31-5-47 hpa-demo]$ ls
+deploy.yaml
+
+```
+
+### Important to limit pod in veritical scale 
+
+<img src="lm.png">
+
+### updated manifest
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-app
+  name: ashu-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-app
+    spec:
+      containers:
+      - image: dockerashu/ashuweb-ui:app4
+        name: ashuweb-ui
+        ports:
+        - containerPort: 80
+        resources: 
+          requests:
+            memory: 50M 
+            cpu: 100m # 1 core cpu -- 1000 mili core (1000m)
+          limits:
+            memory: 400M 
+            cpu: 200m 
+status: {}
+
+```
+
+### creating hpa 
+
+```
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  get  svc
+NAME   TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+lb1    NodePort   10.107.83.19   <none>        80:32532/TCP   2m9s
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  get  deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-app   1/1     1            1           4m31s
+[ashu@ip-172-31-5-47 hpa-demo]$ 
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  autoscale  deployment  ashu-app  --max 15 --min 2 --cpu-percent 80 --dry-run=client -o yaml >hpa.yaml 
+[ashu@ip-172-31-5-47 hpa-demo]$ 
+```
+
+### deployed hpa
+
+```
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  get po 
+NAME                        READY   STATUS    RESTARTS   AGE
+ashu-app-66d6cdf75b-68f7q   1/1     Running   0          7m2s
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  apply -f hpa.yaml 
+horizontalpodautoscaler.autoscaling/ashu-app created
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  get  hpa
+NAME       REFERENCE             TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+ashu-app   Deployment/ashu-app   <unknown>/80%   2         15        0          3s
+[ashu@ip-172-31-5-47 hpa-demo]$ kubectl  get po 
+NAME                        READY   STATUS    RESTARTS   AGE
+ashu-app-66d6cdf75b-68f7q   1/1     Running   0 
+```
+
 
