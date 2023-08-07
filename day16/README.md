@@ -66,8 +66,49 @@ ashu-db-cred   Opaque   3      3s
 ### Deployment 
 
 ```
+kubectl  create deployment ashu-mysql --image=mysql:8.0 --port 3306 --dry-run=client -o yaml >deploy.yaml
+====>
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-mysql
+  name: ashu-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-mysql
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-mysql
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        envFrom:
+          - secretRef:
+              name: ashu-db-cred
+          - configMapRef:
+              name: ashu-db-cm
+status: {}
 
+====>
+[ashu@ip-172-31-5-47 day16]$ kubectl  apply -f deploy.yaml 
+deployment.apps/ashu-mysql created
+[ashu@ip-172-31-5-47 day16]$ kubectl  get  deploy
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-mysql   1/1     1            1           6s
+[ashu@ip-172-31-5-47 day16]$ 
 ```
+
 
 
 
