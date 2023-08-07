@@ -175,6 +175,30 @@ vital-app    1/1     1            1           3s
 
 ```
 
+### creating svc
+
+```
+[ashu@ip-172-31-5-47 day16]$ kubectl  get  deploy -n cloud4c-common 
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ankita-app   1/1     1            1           3m49s
+ashu-app     1/1     1            1           3m59s
+chandu-app   1/1     1            1           45s
+nikita-app   1/1     1            1           4m20s
+ramesh-app   1/1     1            1           2m10s
+sankar-app   1/1     1            1           3m46s
+siva-app     1/1     1            1           12s
+sne-app      1/1     1            1           2m32s
+vital-app    1/1     1            1           3m46s
+[ashu@ip-172-31-5-47 day16]$ kubectl  expose deployment ashu-app  --type NodePort --port 8080 --name ashu-lb1 --namespace cloud4c-common  --dry-run=client -o yaml >websvc.yaml 
+[ashu@ip-172-31-5-47 day16]$ kubectl  create -f websvc.yaml 
+service/ashu-lb1 created
+[ashu@ip-172-31-5-47 day16]$ kubectl  get svc -n cloud4c-common 
+NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashu-lb1   NodePort   10.109.4.248   <none>        8080:30203/TCP   5s
+[ashu@ip-172-31-5-47 day16]$ 
+
+
+```
 
 
 
