@@ -199,6 +199,23 @@ ashu-lb1   NodePort   10.109.4.248   <none>        8080:30203/TCP   5s
 
 
 ```
+### Problem with data persistency in container 
+
+```
+[ashu@ip-172-31-5-47 day16]$ kubectl  get  po 
+NAME                          READY   STATUS    RESTARTS   AGE
+ashu-mysql-66649bf557-6zmpd   1/1     Running   0          40m
+[ashu@ip-172-31-5-47 day16]$ kubectl  delete pod ashu-mysql-66649bf557-6zmpd 
+pod "ashu-mysql-66649bf557-6zmpd" deleted
+[ashu@ip-172-31-5-47 day16]$ 
+[ashu@ip-172-31-5-47 day16]$ kubectl  get  po 
+NAME                          READY   STATUS    RESTARTS   AGE
+ashu-mysql-66649bf557-4bv5s   1/1     Running   0          7s
+[ashu@ip-172-31-5-47 day16]$ 
+
+```
+
+
 
 
 
