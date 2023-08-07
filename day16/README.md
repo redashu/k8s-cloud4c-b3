@@ -215,6 +215,53 @@ ashu-mysql-66649bf557-4bv5s   1/1     Running   0          7s
 
 ```
 
+### updating deployment manifest for storgage usage
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-mysql
+  name: ashu-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-mysql
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-mysql
+    spec:
+      nodeName: node1 # creating pod in node1 only 
+      volumes: # creating volume internally 
+      - name: ashu-db-vol
+        hostPath: # storage will be taken from the node where pod got scheduled
+          path: /db/ashu-data # location from where storage will be taken
+          type: DirectoryOrCreate # if not present then create above location 
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        envFrom:
+          - secretRef:
+              name: ashu-db-cred
+          - configMapRef:
+              name: ashu-db-cm
+        volumeMounts: # for attaching storage to the container
+        - name: ashu-db-vol
+          mountPath: /var/lib/mysql/
+status: {}
+
+```
+
+
 
 
 
