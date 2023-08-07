@@ -37,6 +37,29 @@ kube-root-ca.crt   1      2d23h
 ### secret 
 
 ```
+==< db-cred.env == >
+MYSQL_ROOT_PASSWORD=RootdbPass@123
+MYSQL_USER=ashu
+MYSQL_PASSWORD=Ashudb@098
+
+====>>
+[ashu@ip-172-31-5-47 day16]$ ls
+cm.yaml  db-cred.env  db-details.env
+
+[ashu@ip-172-31-5-47 day16]$ kubectl  create secret 
+docker-registry  (Create a secret for use with a Docker registry)
+generic          (Create a secret from a local file, directory, or literal value)
+tls              (Create a TLS secret)
+
+[ashu@ip-172-31-5-47 day16]$ kubectl  create secret generic  ashu-db-cred  --from-env-file  db-cred.env --dry-run=client -o yaml  >secret.yaml 
+[ashu@ip-172-31-5-47 day16]$ kubectl  create -f secret.yaml 
+secret/ashu-db-cred created
+
+[ashu@ip-172-31-5-47 day16]$ kubectl  get  secrets 
+NAME           TYPE     DATA   AGE
+ashu-db-cred   Opaque   3      3s
+[ashu@ip-172-31-5-47 day16]$ 
+
 
 ```
 
