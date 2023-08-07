@@ -109,6 +109,72 @@ ashu-mysql   1/1     1            1           6s
 [ashu@ip-172-31-5-47 day16]$ 
 ```
 
+## to accept traffic on Db pods we can create ClusterIP type service 
+
+```
+[ashu@ip-172-31-5-47 day16]$ kubectl  get deploy
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-mysql   1/1     1            1           5m46s
+[ashu@ip-172-31-5-47 day16]$ kubectl  expose deployment ashu-mysql --type ClusterIP --port 3306 --name dblb1 --dry-run=client -o yaml  >svc.yaml 
+[ashu@ip-172-31-5-47 day16]$ kubectl  create -f svc.yaml 
+service/dblb1 created
+[ashu@ip-172-31-5-47 day16]$ kubectl  get svc
+NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+dblb1   ClusterIP   10.103.71.150   <none>        3306/TCP   4s
+[ashu@ip-172-31-5-47 day16]$ 
+
+```
+
+### creating web db client in diff ns 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: cloud4c-common # namespace where i want to deploy this
+  creationTimestamp: null
+  labels:
+    app: ashu-app
+  name: ashu-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-app
+    spec:
+      containers:
+      - image: adminer
+        name: adminer
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+===>
+[ashu@ip-172-31-5-47 day16]$ kubectl  create -f web.yaml 
+deployment.apps/ashu-app created
+[ashu@ip-172-31-5-47 day16]$ 
+[ashu@ip-172-31-5-47 day16]$ kubectl  get  deploy
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-mysql   1/1     1            1           13m
+[ashu@ip-172-31-5-47 day16]$ 
+[ashu@ip-172-31-5-47 day16]$ 
+[ashu@ip-172-31-5-47 day16]$ kubectl  get  deploy -n cloud4c-common 
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ankita-app   0/1     1            0           6s
+ashu-app     1/1     1            1           16s
+nikita-app   1/1     1            1           37s
+sankar-app   0/1     1            0           3s
+vital-app    1/1     1            1           3s
+[ashu@ip-172-31-5-47 day16]$ 
+
+```
+
 
 
 
