@@ -204,3 +204,32 @@ ashu-pod17   2/2     Running   0          9s
 
 ```
 
+### multi container pod access 
+
+```
+[ashu@ip-172-31-5-47 day17]$ kubectl  get  po 
+NAME         READY   STATUS    RESTARTS   AGE
+ashu-pod17   2/2     Running   0          3m11s
+[ashu@ip-172-31-5-47 day17]$ kubectl  exec -it  ashu-pod17  -- sh 
+Defaulted container "ashu-data-genc" out of: ashu-data-genc, ashu-data-publish
+/ # 
+/ # 
+/ # ls
+bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
+/ # cd  /mnt/data-gen/
+/mnt/data-gen # ls
+logs.html
+/mnt/data-gen # exit
+[ashu@ip-172-31-5-47 day17]$ 
+[ashu@ip-172-31-5-47 day17]$ kubectl  exec -it  ashu-pod17 -c  ashu-data-publish   -- sh 
+# ls
+bin   dev                  docker-entrypoint.sh  home  lib32  libx32  mnt  proc  run   srv  tmp  var
+boot  docker-entrypoint.d  etc                   lib   lib64  media   opt  root  sbin  sys  usr
+# cd /usr/share/nginx/html
+# ls
+logs.html
+# exit
+```
+
+
+
