@@ -230,6 +230,10 @@ boot  docker-entrypoint.d  etc                   lib   lib64  media   opt  root 
 logs.html
 # exit
 ```
+## daemonset understanding 
+
+<img src="ds.png">
+
 
 
 
