@@ -89,3 +89,64 @@ ashu@ip-172-31-5-47 day17]$ kubectl apply -f pvc.yaml
 NAME            STATUS   VOLUME     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 ashu-db-claim   Bound    vital-pv   3Gi        RWX            manual         58s
 ```
+
+### deployment -- manifest 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-mysql
+  name: ashu-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-mysql
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-mysql
+    spec:
+      nodeName: node1 # creating pod in node1 only 
+      volumes: # creating volume internally 
+      - name: ashu-db-volnew
+        persistentVolumeClaim: # calling pvc 
+          claimName: ashu-db-claim # name of pvc 
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        ports:
+        - containerPort: 3306
+        resources: {}
+        envFrom:
+          - secretRef:
+              name: ashu-db-cred
+          - configMapRef:
+              name: ashu-db-cm
+        volumeMounts: # for attaching storage to the container
+        - name: ashu-db-volnew
+          mountPath: /var/lib/mysql/
+status: {}
+
+```
+
+### creating 
+
+```
+[ashu@ip-172-31-5-47 day17]$ kubectl  create -f cm.yaml -f secret.yaml 
+configmap/ashu-db-cm created
+secret/ashu-db-cred created
+[ashu@ip-172-31-5-47 day17]$ kubectl create -f deploy.yaml 
+deployment.apps/ashu-mysql created
+[ashu@ip-172-31-5-47 day17]$ kubectl  get deploy
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-mysql   1/1     1            1           4s
+[ashu@ip-172-31-5-47 day17]$ 
+```
+
+
