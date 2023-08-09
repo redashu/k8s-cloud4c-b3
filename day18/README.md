@@ -139,3 +139,15 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6InlYNW5VdTJrc0JESW1pUk9KUnhYUVdtTnNwNXhw
 
 <img src="roleb.png">
 
+### 
+
+```
+ 1051  kubectl  create role  cm-access --resource=configmaps --verb=get --verb=list --verb=watch -n ashu-developer 
+ 1052  kubectl  get role -n ashu-developer 
+ 1053  kubectl  get sa -n ashu-developer 
+ 1054  kubectl  create rolebinding bind1 --role  cm-access   --serviceaccount=ashu-developer:only-testing -n ashu-developer 
+ 1055  kubectl  get sa -n ashu-developer 
+ 1056  kubectl  get role -n ashu-developer 
+```
+
+
