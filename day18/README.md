@@ -120,3 +120,18 @@ Data
 namespace:  14 bytes
 token:      eyJhbGciOiJSUzI1NiIsImtpZCI6InlYNW5VdTJrc0JESW1pUk9KUnhYUVdtTnNwNXhwQkNFZVl0ZDh4SS16TW8ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJhc2h1LWRldmVsb3BlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2Vjc
 ```
+
+
+### testing 
+
+```
+1039  kubectl  get  nodes  --kubeconfig  ashu-developer.conf 
+ 1040  kubectl  get  ns  --kubeconfig  ashu-developer.conf 
+ 1041  kubectl  get  po  --kubeconfig  ashu-developer.conf 
+ 1042  kubectl  version -o yaml   --kubeconfig  ashu-developer.conf 
+ 1043  history 
+ 1044  kubectl  get cm   --kubeconfig  ashu-developer.conf 
+ 1045  history 
+[ashu@ip-172-31-5-47 day18-labs]$ 
+```
+
