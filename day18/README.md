@@ -52,7 +52,7 @@ kubectl  create  ns  ashu-developer
 
 ### serviceaccount in namespace
 
-<img src="sa.png">
+<img src="sans.png">
 
 ### checking SA 
 
