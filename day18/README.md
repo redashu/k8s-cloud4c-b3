@@ -135,3 +135,7 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6InlYNW5VdTJrc0JESW1pUk9KUnhYUVdtTnNwNXhw
 [ashu@ip-172-31-5-47 day18-labs]$ 
 ```
 
+### role and rolebinding in k8s 
+
+<img src="roleb.png">
+
