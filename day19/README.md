@@ -218,5 +218,70 @@ affinity: {}
 
 ```
 
+### removing test folder from template location 
 
+```
+[ashu@ip-172-31-5-47 ashu-react-app]$ ls
+charts  Chart.yaml  templates  values.yaml
+[ashu@ip-172-31-5-47 ashu-react-app]$ ls templates/
+deployment.yaml  _helpers.tpl  hpa.yaml  ingress.yaml  NOTES.txt  serviceaccount.yaml  service.yaml  tests
+
+[ashu@ip-172-31-5-47 ashu-react-app]$ rm -rf templates/tests/
+[ashu@ip-172-31-5-47 ashu-react-app]$ 
+[ashu@ip-172-31-5-47 ashu-react-app]$
+
+[ashu@ip-172-31-5-47 ashu-react-app]$ ls
+charts  Chart.yaml  templates  values.yaml
+[ashu@ip-172-31-5-47 ashu-react-app]$ ls templates/
+deployment.yaml  _helpers.tpl  hpa.yaml  ingress.yaml  NOTES.txt  serviceaccount.yaml  service.yaml
+
+[ashu@ip-172-31-5-47 ashu-react-app]$ ls
+charts  Chart.yaml  templates  values.yaml
+[ashu@ip-172-31-5-47 ashu-react-app]$ 
+```
+
+### Install helm chart on k8s
+
+```
+[ashu@ip-172-31-5-47 helm-project]$ helm install ashu-webapp  ./ashu-react-app 
+NAME: ashu-webapp
+LAST DEPLOYED: Thu Aug 10 05:03:16 2023
+NAMESPACE: ashu-apps
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+1. Get the application URL by running these commands:
+  export NODE_PORT=$(kubectl get --namespace ashu-apps -o jsonpath="{.spec.ports[0].nodePort}" services ashu-webapp-ashu-react-app)
+  export NODE_IP=$(kubectl get nodes --namespace ashu-apps -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+
+[ashu@ip-172-31-5-47 helm-project]$ helm ls
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                  APP VERSION
+ashu-webapp     ashu-apps       1               2023-08-10 05:03:16.429300215 +0000 UTC deployed        ashu-react-app-0.1.0   1.16.0
+  
+[ashu@ip-172-31-5-47 helm-project]$ kubectl  get  deploy
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-webapp-ashu-react-app   0/1     1            0           14s
+
+[ashu@ip-172-31-5-47 helm-project]$ kubectl  get  deploy
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-webapp-ashu-react-app   1/1     1            1           111s
+
+[ashu@ip-172-31-5-47 helm-project]$ kubectl  get svc
+NAME                         TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashu-webapp-ashu-react-app   NodePort   10.109.200.222   <none>        3000:32308/TCP   116s
+[ashu@ip-172-31-5-47 helm-project]$ 
+```
+
+### if you are updating values.yaml 
+
+```
+[ashu@ip-172-31-5-47 helm-project]$ helm upgrade  ashu-webapp  ./ashu-react-app/
+Release "ashu-webapp" has been upgraded. Happy Helming!
+NAME: ashu-webapp
+LAST DEPLOYED: Thu Aug 10 05:08:52 2023
+NAMESPACE: ashu-apps
+STATUS: deployed
+```
 
