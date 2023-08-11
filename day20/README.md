@@ -54,3 +54,65 @@ spec:
 status: {}
 
 ```
+
+### adding hostPath volume 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db
+  name: ashu-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-db
+    spec:
+      volumes:
+      - name: ashu-dbvol
+        hostPath:
+          path: /db/ashu/mongo
+          type: DirectoryOrCreate
+      imagePullSecrets: # to pull image from private registry
+      - name: my-secret 
+      containers:
+      - image: cloud4c.azurecr.io/mongo:dbv1
+        name: mongo
+        ports:
+        - containerPort: 27017
+        resources: {}
+        envFrom:
+        - secretRef:
+            name: mongo-cred
+        volumeMounts:
+        - name: ashu-dbvol
+          mountPath: /data/db/
+status: {}
+
+```
+
+### creating svc
+
+```
+[ashu@ip-172-31-5-47 mongo-project]$ kubectl  get deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-db   1/1     1            1           12s
+[ashu@ip-172-31-5-47 mongo-project]$ kubectl  expose deployment ashu-db --type ClusterIP --port 27017 --name lbs1 --dry-run=client -o yaml >svcdb.yaml
+[ashu@ip-172-31-5-47 mongo-project]$ kubectl  create -f svcdb.yaml 
+service/lbs1 created
+[ashu@ip-172-31-5-47 mongo-project]$ kubectl  get svc
+NAME   TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
+lbs1   ClusterIP   10.109.71.67   <none>        27017/TCP   2s
+[ashu@ip-172-31-5-47 mongo-project]$ 
+
+
+```
