@@ -1,0 +1,8 @@
+cloud4c.azurecr.io/mongo:dbv1
+
+cloud4c.azurecr.io/mongo-express:v1
+
+Secret Details: 
+URL:  cloud4c.azurecr.io
+Username: cloud4c
+Password: x8YQ/ogHiBUnrNhNzjpOXB77MAmZ0RQVvCiFTcesAY+ACRAdtpmj
